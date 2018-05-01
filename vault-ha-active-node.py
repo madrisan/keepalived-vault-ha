@@ -1,5 +1,20 @@
 #!/usr/bin/env python3
 
+"""Tracking script for HashiCorp Vault HA Cluster.
+
+This simple Python script can be used as a tracking script for monitoring
+an HashiCorp Vault HA cluster and setup a VIP on the active Vault node.
+
+GitHub Site:
+    https://github.com/madrisan/keepalived-vault-ha
+"""
+
+__author__ = "Davide Madrisan <davide.madrisan.gmail.com>"
+__copyright__ = "Copyright 2018 Davide Madrisan"
+__license__ = "GPL-3.0"
+__status__ = "Stable"
+__version__ = "1"
+
 from os import getenv
 import requests
 import sys
