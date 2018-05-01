@@ -28,7 +28,6 @@ import sys
 def parse_args():
     '''This function parses and return arguments passed in'''
 
-    progname = os.path.basename(sys.argv[0])
     default_timeout = 3
 
     parser = argparse.ArgumentParser(
@@ -47,9 +46,9 @@ def parse_args():
         type = float)
     parser.add_argument(
         "--version", action = "version",
-        version = "{0} v{1}"
+        version = "%(prog)s v{0}"
                   " ( https://github.com/madrisan/keepalived-vault-ha )"
-                  .format(progname, __version__))
+                  .format(__version__))
 
     return parser.parse_args()
 
