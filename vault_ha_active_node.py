@@ -73,7 +73,7 @@ def check_vault(timeout):
 
     try:
         r = requests.get(leader_url, timeout=timeout)
-        if r.status_code != 200:
+        if r.status_code != requests.codes.ok:
             logging.debug('requests returned with status code {0}'.format(r.status_code))
             return False
         ha_enabled = r.get('ha_enabled', False)
