@@ -10,7 +10,7 @@ between them.
 *VRRP* provides a *virtual IP* address to the *active* Vault HA, and transfers
 the Virtual IP to the standby Vault HA in case of failure.
 
-##### What is a Virtual IP Address? 
+##### What is a Virtual IP Address?
 
 Network interface cards (*NICs*) typically bind to a single IP address in TCP/IP
 networks. However, you can also tell the NIC to listen on extra addresses.
@@ -37,7 +37,7 @@ vrrp_script vault_active_node_script {
 (*vault_ha_active_node.py* in our case, for instance *script* can point to
 `/usr/local/bin/vault_ha_active_node.py`).
 
-You can use tracking scripts with a *vrrp_instance* section by specifying a 
+You can use tracking scripts with a *vrrp_instance* section by specifying a
 *track_script clause*, for example:
 
 ```
