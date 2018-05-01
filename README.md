@@ -1,6 +1,9 @@
-# Keepalived Vault HA
+<a href='https://ko-fi.com/K3K57TH3' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://az743702.vo.msecnd.net/cdn/kofi2.png?v=0' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
 
-### Keepalived Tracking Script for HashiCorp Vault HA
+# Keepalived Tracking Script for HashiCorp Vault HA
+
+[![Download Script](https://img.shields.io/badge/download-script-blue.svg)](https://github.com/madrisan/keepalived-vault-ha/blob/master/vault_ha_active_node.py)
+[![License](https://img.shields.io/badge/License-GPL--3.0-blue.svg)](https://spdx.org/licenses/GPL-3.0.html)
 
 To avoid a single point of failure with your [HashiCorp Vault] infrastructure,
 one would set up Vault in *High Availability Mode* (HA) with two identical Vault
@@ -66,7 +69,7 @@ The Python3 script `vault_ha_active_node.py` looks at the environment variable
 `VAULT_ADDR` and when set do ask the Vault REST API if the (local) Vault node is
 the active one. In that case will return `0`.
 The script will return `1` otherwise (`VAULT_ADDR` unset, vault service not
-running or running but not unsealed, node in standby mode, a generic error).
+running or running but not unsealed, node in standby mode, a network error).
 
 The script requires the Python library `requests` (provided by the package
 `python3-requests` in Debian and Fedora).
