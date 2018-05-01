@@ -27,7 +27,10 @@ import sys
 
 def parse_args():
     '''This function parses and return arguments passed in'''
+
     progname = os.path.basename(sys.argv[0])
+    default_timeout = 3
+
     parser = argparse.ArgumentParser(
         description = 'Keepalived Tracking Script for HashiCorp Vault HA.')
     parser.add_argument(
@@ -37,10 +40,11 @@ def parse_args():
         dest = "debug")
     parser.add_argument(
         "-t", "--timeout",
-        help = "stop waiting for a response after a given number of seconds",
+        help = "stop waiting for a response after a given number of seconds"
+               " (default: {0})".format(default_timeout),
         dest = "timeout",
-        default=3,
-        type=float)
+        default = default_timeout,
+        type = float)
     parser.add_argument(
         "--version", action = "version",
         version = "{0} v{1}"
