@@ -56,27 +56,27 @@ def check_vault(timeout):
     '''This function returns True if the node pointed by the environment variable
        VAULT_ADDR is active, False otherwise.'''
 
-    api_version = 'v1'
-    resource = 'sys/leader'
-
     vault_addr = os.getenv('VAULT_ADDR', '')
     if not vault_addr:
         logging.debug('VAULT_ADDR is unset, aborting...')
         return False
 
-    logging.debug('VAULT_ADDR: {0}'.format(vault_addr))
+    logging.debug('VAULT_ADDR: %s' % vault_addr)
 
-    leader_url = ('{0}/{1}/{2}'
-                  .format(vault_addr, api_version, resource))
-    logging.debug('Querying the URL: {0}'.format(leader_url))
+    api_version = 'v1'
+    resource = 'sys/leader'
+    leader_url = '{}/{}/{}'.format(vault_addr, api_version, resource)
+    logging.debug('Querying the URL: %s' % leader_url)
 
     try:
         r = requests.get(leader_url, timeout=timeout)
         if r.status_code != requests.codes.ok:
-            logging.debug('requests returned with status code {0}'.format(r.status_code))
+            logging.debug('requests returned with status code %d' % r.status_code)
             return False
+
         ha_enabled = r.get('ha_enabled', False)
         is_self = r.get('is_self', False)
+
         if ha_enabled and is_self:
             return True
     except requests.exceptions.RequestException as e:
