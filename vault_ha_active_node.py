@@ -66,16 +66,20 @@ def check_vault(timeout):
     api_version = 'v1'
     resource = 'sys/leader'
     leader_url = '{}/{}/{}'.format(vault_addr, api_version, resource)
+    logging.debug('Found Python requests version %s' % requests.__version__)
     logging.debug('Querying the URL: %s' % leader_url)
 
     try:
         r = requests.get(leader_url, timeout=timeout)
         if r.status_code != requests.codes.ok:
-            logging.debug('requests returned with status code %d' % r.status_code)
+            logging.debug('Requests returned with status code %d' % r.status_code)
             return False
 
-        ha_enabled = r.get('ha_enabled', False)
-        is_self = r.get('is_self', False)
+        data = r.json()
+        logging.debug('Vault reply: {}'.format(data))
+
+        ha_enabled = data.get('ha_enabled', False)
+        is_self = data.get('is_self', False)
 
         if ha_enabled and is_self:
             return True
