@@ -24,6 +24,9 @@ import logging
 import os
 import requests
 import sys
+from systemd.journal import JournalHandler
+
+log = logging.getLogger('script')
 
 def parse_args():
     '''This function parses and return arguments passed in'''
@@ -58,40 +61,47 @@ def check_vault(timeout):
 
     vault_addr = os.getenv('VAULT_ADDR', '')
     if not vault_addr:
-        logging.debug('VAULT_ADDR is unset, aborting...')
+        log.debug('VAULT_ADDR is unset, aborting...')
         return False
 
-    logging.debug('VAULT_ADDR: %s' % vault_addr)
+    log.debug('VAULT_ADDR: %s' % vault_addr)
 
     api_version = 'v1'
     resource = 'sys/leader'
     leader_url = '{}/{}/{}'.format(vault_addr, api_version, resource)
-    logging.debug('Found Python requests version %s' % requests.__version__)
-    logging.debug('Querying the URL: %s' % leader_url)
+    log.debug('Found Python requests version %s' % requests.__version__)
+    log.debug('Querying the URL: %s' % leader_url)
 
     try:
         r = requests.get(leader_url, timeout=timeout)
         if r.status_code != requests.codes.ok:
-            logging.debug('Requests returned with status code %d' % r.status_code)
+            log.debug('Requests returned with status code %d' % r.status_code)
             return False
 
         data = r.json()
-        logging.debug('Vault reply: {}'.format(data))
+        log.debug('Vault reply: {}'.format(data))
 
         ha_enabled = data.get('ha_enabled', False)
+        log.debug('Vault ha_enabled: %s' % ha_enabled)
+
         is_self = data.get('is_self', False)
+        log.debug('Vault is_self: %s' % is_self)
 
         if ha_enabled and is_self:
             return True
     except requests.exceptions.RequestException as e:
-        logging.error(format(str(e)))
+        log.error(format(str(e)))
 
     return False
 
 if __name__ == '__main__':
     args = parse_args()
+
+    log.addHandler(JournalHandler())
     if args.debug:
-        logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
+        log.setLevel(logging.DEBUG)
 
     is_active = check_vault(args.timeout)
+    log.debug('Vault HA active node: %s' % is_active)
+
     sys.exit(0 if is_active else 1)
