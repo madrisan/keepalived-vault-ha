@@ -48,6 +48,10 @@ def parse_args():
         default = default_timeout,
         type = float)
     parser.add_argument(
+        "-u", "--url",
+        help = "vault address",
+        dest = "url")
+    parser.add_argument(
         "--version", action = "version",
         version = "%(prog)s v{0}"
                   " ( https://github.com/madrisan/keepalived-vault-ha )"
@@ -55,13 +59,14 @@ def parse_args():
 
     return parser.parse_args()
 
-def check_vault(timeout):
-    '''This function returns True if the node pointed by the environment variable
-       VAULT_ADDR is active, False otherwise.'''
+def check_vault(url, timeout):
+    '''This function returns True if the node pointed by url (if the --url
+       command option has been set) or by the environment variable VAULT_ADDR
+       is active, False otherwise.'''
 
-    vault_addr = os.getenv('VAULT_ADDR', '')
+    vault_addr = url if url else os.getenv('VAULT_ADDR', '')
     if not vault_addr:
-        log.debug('VAULT_ADDR is unset, aborting...')
+        log.debug('Neither --url was selected nor VAULT_ADDR is set')
         return False
 
     log.debug('VAULT_ADDR: %s' % vault_addr)
@@ -101,7 +106,7 @@ if __name__ == '__main__':
     if args.debug:
         log.setLevel(logging.DEBUG)
 
-    is_active = check_vault(args.timeout)
+    is_active = check_vault(args.url, args.timeout)
     log.debug('Vault HA active node: %s' % is_active)
 
     sys.exit(0 if is_active else 1)
