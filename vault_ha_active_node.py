@@ -69,7 +69,7 @@ def check_vault(url, timeout):
         log.debug('Neither --url was selected nor VAULT_ADDR is set')
         return False
 
-    log.debug('VAULT_ADDR: %s' % vault_addr)
+    log.debug('Vault URL: %s' % vault_addr)
 
     api_version = 'v1'
     resource = 'sys/leader'
