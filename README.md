@@ -74,5 +74,16 @@ running or running but not unsealed, node in standby mode, a network error).
 The script requires the Python library `requests` (provided by the package
 `python3-requests` in Debian and Fedora).
 
+###### Examples
+
+```
+./vault_ha_active_node.py --timeout=1 --url='https://127.0.0.1:8200'
+```
+
+You can also do some debugging (check for messages with `journald -f`)
+```
+./vault_ha_active_node.py --debug
+```
+
 [HashiCorp Vault]: https://www.vaultproject.io/
 [Keepalived]: http://www.keepalived.org/
