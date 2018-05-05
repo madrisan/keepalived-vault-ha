@@ -26,19 +26,23 @@ that Keepalived runs at regular intervals, according to a *vrrp_script*
 definition:
 
 ```
+global_defs {
+  script_user keepalived
+  enable_script_security
+}
+
 vrrp_script vault_active_node_script {
-  script       "program_path arg ..."
-  interval i   # Run script every i seconds
-  fall f       # If script returns non-zero f times in succession, enter FAULT state
-  rise r       # If script returns zero r times in succession, exit FAULT state
-  timeout t    # Wait up to t seconds for script before assuming non-zero exit code
-  weight w     # Reduce priority by w on fall
+  script       "/etc/keepalived/vault_ha_active_node.py --timeout=1 --url='https://127.0.0.1:8200'"
+  interval 2   # Run script every 2 seconds
+  fall 1       # If script returns non-zero 2 times in succession, enter FAULT state
+  rise 3       # If script returns zero r times in succession, exit FAULT state
+  timeout 2    # Wait up to t seconds for script before assuming non-zero exit code
+  weight 10    # Reduce priority by 10 on fall
 }
 ```
 
-*program_path* is the full pathname of an executable script or binary
-(*vault_ha_active_node.py* in our case, for instance *script* can point to
-`/usr/local/bin/vault_ha_active_node.py`).
+In this example `keepalived` is the (non-root) user executing the script
+`vault_ha_active_node.py`.
 
 You can use tracking scripts with a *vrrp_instance* section by specifying a
 *track_script clause*, for example:
@@ -52,7 +56,7 @@ vrrp_instance VIP_VAULT_HA {
   advert_int 1
   authentication {
     auth_type PASS
-    auth_pass n0ts0r4nd0mp4ssw0rd
+    auth_pass n0ts0r4nd0m
   }
   virtual_ipaddress {
     10.0.0.100/24
