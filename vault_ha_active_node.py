@@ -14,7 +14,7 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 '''
 
 __author__ = "Davide Madrisan <davide.madrisan.gmail.com>"
-__copyright__ = "Copyright (C) 2018 Davide Madrisan"
+__copyright__ = "Copyright (C) 2018-2020 Davide Madrisan"
 __license__ = "GPL-3.0"
 __status__ = "Production"
 __version__ = "3"
