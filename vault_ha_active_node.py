@@ -97,17 +97,23 @@ def check_vault(url, timeout, cacert, cert, certkey):
     if vault_ca:
         log.debug('Using CA: {}'.format(vault_ca))
 
-
     api_version = 'v1'
     resource = 'sys/leader'
-    leader_url = '{}/{}/{}'.format(vault_addr, api_version, resource)
-    log.debug('Found Python requests version {}'. format(requests.__version__))
+    leader_url = '{}/{}/{}'.format(vault_addr,
+                                   api_version,
+                                   resource)
+    log.debug(('Found Python requests version {}'
+               .format(requests.__version__)))
     log.debug('Querying the URL: {}'.format(leader_url))
 
     try:
-        r = requests.get(leader_url, timeout=timeout, cert=ssl_pair, verify=vault_ca)
+        r = requests.get(leader_url,
+                         timeout=timeout,
+                         cert=ssl_pair,
+                         verify=vault_ca)
         if r.status_code != requests.codes.ok:
-            log.debug('Requests returned with status code {}'.format(r.status_code))
+            log.debug(('Requests returned with status code {}'
+                       .format(r.status_code)))
             return False
 
         data = r.json()
@@ -133,7 +139,11 @@ if __name__ == '__main__':
     if args.debug:
         log.setLevel(logging.DEBUG)
 
-    is_active = check_vault(args.url, args.timeout, args.cacert, args.cert, args.certkey)
+    is_active = check_vault(args.url,
+                            args.timeout,
+                            args.cacert,
+                            args.cert,
+                            args.certkey)
     log.debug('Vault HA active node: {}'.format(is_active))
 
     sys.exit(0 if is_active else 1)
