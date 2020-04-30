@@ -86,12 +86,11 @@ def check_vault(url, timeout, cacert, cert, certkey):
 
     log.debug('Vault URL: {}'.format(vault_addr))
 
-    ssl_pair=()
+    ssl_pair = ()
     vault_cert = cert if cert else os.getenv('VAULT_CLIENT_CERT', '')
     vault_key = certkey if certkey else os.getenv('VAULT_CLIENT_KEY', '')
     if vault_cert and vault_key:
-        ssl_pair=(vault_cert,vault_key)
-    if ssl_pair:
+        ssl_pair = (vault_cert, vault_key)
         log.debug('Client SSL pair provided: {}'.format(ssl_pair))
 
     vault_ca = cacert if cacert else os.getenv('VAULT_CACERT', '')
