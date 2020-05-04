@@ -79,7 +79,7 @@ def check_vault(url, timeout, cacert, cert, certkey):
        command option has been set) or by the environment variable VAULT_ADDR
        is active, False otherwise.'''
 
-    vault_addr = url if url else os.getenv('VAULT_ADDR')
+    vault_addr = url if url else os.getenv('VAULT_ADDR', '')
     if not vault_addr:
         log.debug('Neither --url was selected nor VAULT_ADDR is set')
         return False
